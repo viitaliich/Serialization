@@ -22,7 +22,6 @@ public:
     
     char* writeBytes(char* buffer, const char* value, short valueLength)        // short -> size_t
     {
-//        char* ptr = writeBytes(buffer, &valueLength);
         char* ptr = buffer;
         std::memcpy(ptr, value, valueLength);
         ptr += valueLength;
@@ -38,7 +37,6 @@ public:
         char* ptr = writeBytes(buffer, valueChar, valueLength);
         return ptr;
     }
-    
     
     // TODO: list of 8 booleans in 1 byte
     
