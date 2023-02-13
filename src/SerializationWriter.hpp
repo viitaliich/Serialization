@@ -20,12 +20,13 @@ public:
         return ptr;
     }
     
-    char* writeBytes(char* buffer, const char* value, short valueLength)        // short -> size_t
+    template <typename T>
+    char* writeBytes(char* buffer, const T* value, short valueLength)        // short -> size_t
     {
+        size_t size = sizeof(T) * valueLength;
         char* ptr = buffer;
-        std::memcpy(ptr, value, valueLength);
-        ptr += valueLength;
-        
+        std::memcpy(ptr, value, size);
+        ptr += size;
         return ptr;
     }
     

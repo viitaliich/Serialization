@@ -1,18 +1,18 @@
-#include "Field.hpp"
+#include "Array.hpp"
 
 
-Field::~Field()
+Array::~Array()
 {
     delete sw;
 }
 
-void Field::setName(std::string name)
+void Array::setName(std::string name)
 {
     nameLength = name.length();
     this->name = (char*)name.c_str();
 }
 
-char* Field::GetBytes(char* buffer)
+char* Array::GetBytes(char* buffer)
 {
     char* ptr = buffer;
     ptr = sw->writeBytes(ptr, &containerType);
@@ -20,6 +20,7 @@ char* Field::GetBytes(char* buffer)
     ptr = sw->writeBytes(ptr, this->name, nameLength);
     ptr = sw->writeBytes(ptr, &dataType);
     ptr = sw->writeBytes(ptr, &dataSize);
+    ptr = sw->writeBytes(ptr, &dataCount);
     ptr = sw->writeBytes(ptr, data, dataSize);
     
     
