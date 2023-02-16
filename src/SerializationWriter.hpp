@@ -2,7 +2,7 @@
 
 #include <string>
 #include <iostream>
-
+#include "utils/Log.hpp"
 
 class SerializationWriter
 {
@@ -21,12 +21,11 @@ public:
     }
     
     template <typename T>
-    char* writeBytes(char* buffer, const T* value, short valueLength)        // short -> size_t
+    char* writeBytes(char* buffer, const T* value, short arraySize)        // short -> size_t
     {
-        size_t size = sizeof(T) * valueLength;
         char* ptr = buffer;
-        std::memcpy(ptr, value, size);
-        ptr += size;
+        std::memcpy(ptr, value, arraySize);
+        ptr += arraySize;
         return ptr;
     }
     

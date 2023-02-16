@@ -15,7 +15,7 @@ public:
     short nameLength;       // short    ???
     char* name;
     char dataType;
-    int dataCount;          // size_t ???
+    short dataCount;          // size_t ???
     short dataSize;
     char* data;
     SerializationWriter* sw;
@@ -23,15 +23,15 @@ public:
 public:
     
     template <typename T>
-    Array(std::string name, char type, const T* value, const int length)        // int ???
+    Array(std::string name, char type, const T* value, const short length)        // int ???
     {
         sw = new SerializationWriter();
         setName(name);
         dataType = type;        // ??? do we need this?
         dataSize = sizeof(T);
         dataCount = length;
-        this->data = new char[dataType * dataCount];
-        sw->writeBytes(data, value, dataCount);
+        this->data = new char[dataSize * dataCount];
+        sw->writeBytes(data, value, dataSize * dataCount);
     }
     
     ~Array();
@@ -42,6 +42,6 @@ public:
     inline size_t GetArraySize()
     {
         // can be modified (depends on class members) ???
-        return sizeof(containerType) + sizeof(nameLength) + nameLength + sizeof(dataType) + sizeof(dataCount) + sizeof(dataSize) + dataSize;
+        return sizeof(containerType) + sizeof(nameLength) + nameLength + sizeof(dataType) + sizeof(dataCount) + sizeof(dataSize) + dataSize * dataCount;
     }
 };
