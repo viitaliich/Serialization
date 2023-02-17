@@ -31,7 +31,18 @@ public:
         dataType = type;        // ??? do we need this?
         dataSize = sizeof(T);
         
-        this->data = new char[sizeof(T)];
+        this->data = new char[dataSize];
+        sw->writeBytes(this->data, value);
+    }
+    
+    Field(std::string name, char type, const std::string* value)
+    {
+        sw = new SerializationWriter();
+        setName(name);
+        dataType = type;        // ??? do we need this?
+        dataSize = value->length();
+        
+        this->data = new char[dataSize];
         sw->writeBytes(this->data, value);
     }
     

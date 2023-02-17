@@ -22,7 +22,8 @@ int main(int argc, const char * argv[]) {
     char* data = new char[bufferSize];
     char* ptr = data;
     
-    int val = 8;
+//    int val = 8;
+    std::string val = "HELLO";
     Field* field = new Field(str(val), EnumType::INT, &val);
 //    ptr = field->GetBytes(ptr);
 
