@@ -2,6 +2,14 @@
 #include "utils/Log.hpp"
 
 
+Object::Object(std::string name):        // int ???
+    mSize(0)
+{
+    sw = new SerializationWriter();
+    setName(name);
+    mSize += sizeof(containerType) + sizeof(nameLength) + sizeof(mFieldsCount) + sizeof(mArraysCount);
+}
+
 Object::~Object()
 {
     delete sw;
@@ -11,13 +19,13 @@ Object::~Object()
 
 void Object::setName(std::string name)
 {
-    if (this->name != nullptr)
+    if (!this->name.empty())
     {
         mSize -= nameLength;
     }
     
     nameLength = name.length();
-    this->name = (char*)name.c_str();
+    this->name = name;
     
     mSize += nameLength;
 }
@@ -28,7 +36,7 @@ char* Object::GetBytes(char* buffer)
     char* ptr = buffer;
     ptr = sw->writeBytes(ptr, &containerType);
     ptr = sw->writeBytes(ptr, &nameLength);
-    ptr = sw->writeBytes(ptr, this->name, nameLength);
+    ptr = sw->writeBytes(ptr, &name);
     ptr = sw->writeBytes(ptr, &mFieldsCount);
     ptr = sw->writeBytes(ptr, &mArraysCount);
 

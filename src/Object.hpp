@@ -16,7 +16,7 @@ public:
     
     const char containerType = EnumContainerType::OBJECT;
     short nameLength;       // short    ???
-    char* name;
+    std::string name;
     
 private:
     SerializationWriter* sw;
@@ -30,14 +30,7 @@ private:
     
 public:
     
-    Object(std::string name):        // int ???
-        mSize(0)
-    {
-        sw = new SerializationWriter();
-        setName(name);
-        mSize += sizeof(containerType) + sizeof(nameLength) + sizeof(mFieldsCount) + sizeof(mArraysCount);
-    }
-    
+    Object(std::string name);
     ~Object();
     
     void setName(std::string name);

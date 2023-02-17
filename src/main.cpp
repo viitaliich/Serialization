@@ -23,11 +23,11 @@ int main(int argc, const char * argv[]) {
     Field* field = new Field("TestField", EnumType::INT, &val);
     ptr = field->GetBytes(ptr);
 
-    int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    Array* array = new Array("TestArray", EnumType::INT, &arr, 5);
+    int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    Array* array = new Array("TestArray", EnumType::INT, &arr, 10);
     ptr = array->GetBytes(ptr);
     
-    Object* object = new Object("qwertyy");
+    Object* object = new Object("Test Object");
     object->AddArray(array);
     object->AddField(field);
     ptr = object->GetBytes(ptr);

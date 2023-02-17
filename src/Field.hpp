@@ -13,10 +13,12 @@ public:
     
     const char containerType = EnumContainerType::FIELD;
     short nameLength;       // short    ???
-    char* name;
+    std::string name;
     char dataType;
     short dataSize;
     char* data;
+    
+private:
     SerializationWriter* sw;
     
 public:

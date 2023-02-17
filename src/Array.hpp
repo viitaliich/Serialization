@@ -13,11 +13,13 @@ public:
     
     const char containerType = EnumContainerType::ARRAY;
     short nameLength;       // short    ???
-    char* name;
+    std::string name;
     char dataType;
     short dataCount;          // size_t ???
     short dataSize;
     char* data;
+    
+private:
     SerializationWriter* sw;
     
 public:
@@ -30,8 +32,8 @@ public:
         dataType = type;        // ??? do we need this?
         dataSize = sizeof(T);
         dataCount = length;
-        this->data = new char[dataSize * dataCount];
-        sw->writeBytes(data, value, dataSize * dataCount);
+        this->data = new char[dataSize ];
+        sw->writeBytes(data, value, dataSize );
     }
     
     ~Array();
