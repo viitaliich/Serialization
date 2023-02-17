@@ -2,11 +2,14 @@
 
 #include "utils/Log.hpp"
 #include "SerializationWriter.hpp"
+#include "Root.hpp"
 #include "Object.hpp"
 #include "Field.hpp"
 #include "Array.hpp"
 #include "Type.hpp"
 
+
+#define str(s) #s
 
 int main(int argc, const char * argv[]) {
     
@@ -20,17 +23,21 @@ int main(int argc, const char * argv[]) {
     char* ptr = data;
     
     int val = 8;
-    Field* field = new Field("TestField", EnumType::INT, &val);
-    ptr = field->GetBytes(ptr);
+    Field* field = new Field(str(val), EnumType::INT, &val);
+//    ptr = field->GetBytes(ptr);
 
     int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    Array* array = new Array("TestArray", EnumType::INT, &arr, 10);
-    ptr = array->GetBytes(ptr);
+    Array* array = new Array(str(arr), EnumType::INT, &arr, 10);
+//    ptr = array->GetBytes(ptr);
     
-    Object* object = new Object("Test Object");
+    Object* object = new Object(str(object));
     object->AddArray(array);
     object->AddField(field);
     ptr = object->GetBytes(ptr);
+    
+    Root* root = new Root(str(root));
+    root->AddObject(object);
+    ptr = root->GetBytes(ptr);
     
    
     logBytes(data, bufferSize);

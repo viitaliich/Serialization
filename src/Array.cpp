@@ -8,8 +8,15 @@ Array::~Array()
 
 void Array::setName(std::string name)
 {
+    if (!this->name.empty())
+    {
+        mSize -= nameLength;
+    }
+    
     nameLength = name.length();
     this->name = name;
+    
+    mSize += nameLength;
 }
 
 char* Array::GetBytes(char* buffer)

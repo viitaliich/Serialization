@@ -21,6 +21,7 @@ public:
     
 private:
     SerializationWriter* sw;
+    short mSize;
     
 public:
     
@@ -29,6 +30,7 @@ public:
     {
         sw = new SerializationWriter();
         setName(name);
+        mSize = sizeof(containerType) + sizeof(nameLength) + sizeof(mSize) + sizeof(dataType) + sizeof(dataCount) + sizeof(dataSize) + dataSize * dataCount;
         dataType = type;        // ??? do we need this?
         dataSize = sizeof(T);
         dataCount = length;
@@ -44,6 +46,6 @@ public:
     inline size_t GetArraySize()
     {
         // can be modified (depends on class members) ???
-        return sizeof(containerType) + sizeof(nameLength) + nameLength + sizeof(dataType) + sizeof(dataCount) + sizeof(dataSize) + dataSize * dataCount;
+        return mSize;
     }
 };

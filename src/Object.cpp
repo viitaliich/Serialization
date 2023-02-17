@@ -7,7 +7,7 @@ Object::Object(std::string name):        // int ???
 {
     sw = new SerializationWriter();
     setName(name);
-    mSize += sizeof(containerType) + sizeof(nameLength) + sizeof(mFieldsCount) + sizeof(mArraysCount);
+    mSize += sizeof(containerType) + sizeof(nameLength) + sizeof(mSize) + sizeof(mFieldsCount) + sizeof(mArraysCount);
 }
 
 Object::~Object()
@@ -37,6 +37,7 @@ char* Object::GetBytes(char* buffer)
     ptr = sw->writeBytes(ptr, &containerType);
     ptr = sw->writeBytes(ptr, &nameLength);
     ptr = sw->writeBytes(ptr, &name);
+    ptr = sw->writeBytes(ptr, &mSize);
     ptr = sw->writeBytes(ptr, &mFieldsCount);
     ptr = sw->writeBytes(ptr, &mArraysCount);
 

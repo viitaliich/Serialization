@@ -5,7 +5,8 @@ enum EnumContainerType : char
     UNKNOWN_CONTAINER = 0,
     FIELD,
     ARRAY,
-    OBJECT
+    OBJECT,
+    ROOT
 };
 
 class ContainerType
