@@ -30,10 +30,10 @@ public:
     {
         sw = new SerializationWriter();
         setName(name);
-        mSize = sizeof(containerType) + sizeof(nameLength) + sizeof(mSize) + sizeof(dataType) + sizeof(dataCount) + sizeof(dataSize) + dataSize * dataCount;
         dataType = type;        // ??? do we need this?
         dataSize = sizeof(T);
         dataCount = length;
+        mSize += sizeof(containerType) + sizeof(nameLength) + sizeof(mSize) + sizeof(dataType) + sizeof(dataCount) + sizeof(dataSize) + dataSize;
         this->data = new char[dataSize ];
         sw->writeBytes(data, value, dataSize );
     }

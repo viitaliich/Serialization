@@ -25,6 +25,7 @@ char* Array::GetBytes(char* buffer)
     ptr = sw->writeBytes(ptr, &containerType);
     ptr = sw->writeBytes(ptr, &nameLength);
     ptr = sw->writeBytes(ptr, &name);
+    ptr = sw->writeBytes(ptr, &mSize);
     ptr = sw->writeBytes(ptr, &dataType);
     ptr = sw->writeBytes(ptr, &dataSize);
     ptr = sw->writeBytes(ptr, &dataCount);
