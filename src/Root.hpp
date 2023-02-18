@@ -45,4 +45,6 @@ public:
     bool AddObject(Object* object);
     
     void Deserialize(char* data);
+    
+    void LogRoot();
 };

@@ -7,7 +7,7 @@ Object::Object(std::string name):        // int ???
 {
     sw = new SerializationWriter();
     setName(name);
-    mSize += sizeof(containerType) + sizeof(nameLength) + sizeof(mSize) + sizeof(mFieldsCount) + sizeof(mArraysCount);
+    mSize += sizeof(mContainerType) + sizeof(mNameLength) + sizeof(mSize) + sizeof(mFieldsCount) + sizeof(mArraysCount);
 }
 
 Object::~Object()
@@ -17,26 +17,31 @@ Object::~Object()
     delete mArrays;
 }
 
+Object::Object()
+{
+}
+
+
 void Object::setName(std::string name)
 {
-    if (!this->name.empty())
+    if (!this->mName.empty())
     {
-        mSize -= nameLength;
+        mSize -= mNameLength;
     }
     
-    nameLength = name.length();
-    this->name = name;
+    mNameLength = name.length();
+    this->mName = name;
     
-    mSize += nameLength;
+    mSize += mNameLength;
 }
 
 
 char* Object::GetBytes(char* buffer)
 {
     char* ptr = buffer;
-    ptr = sw->writeBytes(ptr, &containerType);
-    ptr = sw->writeBytes(ptr, &nameLength);
-    ptr = sw->writeBytes(ptr, &name);
+    ptr = sw->writeBytes(ptr, &mContainerType);
+    ptr = sw->writeBytes(ptr, &mNameLength);
+    ptr = sw->writeBytes(ptr, &mName);
     ptr = sw->writeBytes(ptr, &mSize);
     ptr = sw->writeBytes(ptr, &mFieldsCount);
     ptr = sw->writeBytes(ptr, &mArraysCount);
@@ -71,6 +76,49 @@ bool Object::AddArray(Array* array)
     mSize += array->GetArraySize();
     mArraysCount = mArrays->size();
     return true;
+}
+
+void Object::Deserialize(char* data)
+{
+    char* ptr = data;
+    
+    char containerType;
+    ptr = sw->readBytes(ptr, &containerType);
+    if(containerType != mContainerType)
+    {
+        std::cout << "Can't deserialize Object: wrong Container Type!" << std::endl;
+        return;
+    }
+    
+    ptr = sw->readBytes(ptr, &mNameLength);
+    ptr = sw->readBytes(ptr, &mName, mNameLength);
+    ptr = sw->readBytes(ptr, &mSize);
+    ptr = sw->readBytes(ptr, &mFieldsCount);
+    // TODO: Fileds
+    ptr = sw->readBytes(ptr, &mArraysCount);
+    // TODO: Arrays
+    
+//    std::cout << mObjectsCount << std::endl;
+    
+}
+
+void Object::LogObject()
+{
+    std::cout << "mContainerType - " << (int)mContainerType << std::endl;
+    std::cout << "mNameLength - " << mNameLength << std::endl;
+    std::cout << "mName - " << mName << std::endl;
+    std::cout << "mSize - " << mSize << std::endl;
+    std::cout << "mArraysCount - " << mArraysCount << std::endl;
+    for(size_t i = 0; i < mArraysCount; i++)
+    {
+        std::cout << "--Array " << i << std::endl;
+    }
+    std::cout << "mFieldsCount - " << mFieldsCount << std::endl;
+    for(size_t i = 0; i < mFieldsCount; i++)
+    {
+        std::cout << "--Field " << i << std::endl;
+    }
+    
 }
 
 

@@ -14,9 +14,9 @@ class Object
 {
 public:
     
-    const char containerType = EnumContainerType::OBJECT;
-    short nameLength;       // short    ???
-    std::string name;
+    const char mContainerType = EnumContainerType::OBJECT;
+    short mNameLength;       // short    ???
+    std::string mName;
     
 private:
     SerializationWriter* sw;
@@ -31,6 +31,7 @@ private:
 public:
     
     Object(std::string name);
+    Object();
     ~Object();
     
     void setName(std::string name);
@@ -43,4 +44,8 @@ public:
     
     bool AddField(Field* field);
     bool AddArray(Array* array);
+    
+    void Deserialize(char* data);
+    
+    void LogObject();
 };

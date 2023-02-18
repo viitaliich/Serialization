@@ -54,11 +54,9 @@ void testDeserialisation(char* data)
 {
     Root* root = new Root();
     root->Deserialize(data);
+    root->LogRoot();
     
-//    std::cout << root->mHeader << std::endl;
-//    std::cout << (int)root->mContainerType << std::endl;
-//    std::cout << root->mNameLength << std::endl;
-//    std::cout << root->mName << std::endl;
+    delete root;
 }
 
 

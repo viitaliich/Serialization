@@ -17,6 +17,10 @@ Root::Root()
 Root::~Root()
 {
     delete sw;
+    for(size_t i = 0; i < mObjectsCount; i++)
+    {
+        delete (*mObjects)[i];
+    }
     delete mObjects;
 }
 
@@ -85,8 +89,30 @@ void Root::Deserialize(char* data)
     ptr = sw->readBytes(ptr, &mSize);
     ptr = sw->readBytes(ptr, &mObjectsCount);
     
+    for(size_t i = 0; i < mObjectsCount; i++)
+    {
+        Object* object = new Object();
+        object->Deserialize(ptr);
+        mObjects->push_back(object);
+    }
     
-    std::cout << mObjectsCount << std::endl;
+//    std::cout << mObjectsCount << std::endl;
+    
+}
+
+void Root::LogRoot()
+{
+    std::cout << "mHeader - " << mHeader << std::endl;
+    std::cout << "mContainerType - " << (int)mContainerType << std::endl;
+    std::cout << "mNameLength - " << mNameLength << std::endl;
+    std::cout << "mName - " << mName << std::endl;
+    std::cout << "mSize - " << mSize << std::endl;
+    std::cout << "mObjectsCount - " << mObjectsCount << std::endl;
+    for(size_t i = 0; i < mObjectsCount; i++)
+    {
+        std::cout << "-Object " << i << std::endl;
+        (*mObjects)[i]->LogObject();
+    }
     
 }
 
