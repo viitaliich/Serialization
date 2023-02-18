@@ -11,7 +11,7 @@
 #define str(s) #s
 
 
-void testSerialisation()
+char* testSerialisation(char* buffer)
 {
     
 //    int val = 8;
@@ -29,37 +29,43 @@ void testSerialisation()
     root->AddObject(object);
     
     size_t bufferSize = 0;         // field->GetFieldSize()
-    bufferSize += field->GetFieldSize();
-    bufferSize += array->GetArraySize();
-    bufferSize += object->GetObjectSize();
+//    bufferSize += field->GetFieldSize();
+//    bufferSize += array->GetArraySize();
+//    bufferSize += object->GetObjectSize();
     bufferSize += root->GetRootSize();
     
-    char* data = new char[bufferSize];
-    char* ptr = data;
+    buffer = new char[bufferSize];
+    char* ptr = buffer;
     
-    ptr = field->GetBytes(ptr);
-    ptr = array->GetBytes(ptr);
-    ptr = object->GetBytes(ptr);
+//    ptr = field->GetBytes(ptr);
+//    ptr = array->GetBytes(ptr);
+//    ptr = object->GetBytes(ptr);
     ptr = root->GetBytes(ptr);
        
-    logBytes(data, bufferSize);
+    logBytes(buffer, bufferSize);
     
     const char* filePath = "/Users/vklimov/dev/Serialization/Serialization/src/test_file.txt";
-    logBytesToFile(filePath, data, bufferSize);
+    logBytesToFile(filePath, buffer, bufferSize);
     
-    delete[] data;
+    return buffer;
 }
 
-void testDeserialisation()
+void testDeserialisation(char* data)
 {
+    Root* root = new Root();
+    root->Deserialize(data);
     
+//    std::cout << root->mHeader << std::endl;
+//    std::cout << (int)root->mContainerType << std::endl;
+//    std::cout << root->mNameLength << std::endl;
+//    std::cout << root->mName << std::endl;
 }
 
 
 int main(int argc, const char * argv[]) {
     
-    testSerialisation();
-    testDeserialisation();
+    char* data = testSerialisation(data);
+    testDeserialisation(data);
     
     return 0;
 }

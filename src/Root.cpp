@@ -7,7 +7,11 @@ Root::Root(std::string name):        // int ???
 {
     sw = new SerializationWriter();
     setName(name);
-    mSize += header.length() + sizeof(containerType) + sizeof(nameLength) + sizeof(mSize) + sizeof(mObjectsCount);
+    mSize += mHeader.length() + sizeof(mContainerType) + sizeof(mNameLength) + sizeof(mSize) + sizeof(mObjectsCount);
+}
+
+Root::Root()
+{
 }
 
 Root::~Root()
@@ -18,24 +22,24 @@ Root::~Root()
 
 void Root::setName(std::string name)
 {
-    if (!this->name.empty())
+    if (!this->mName.empty())
     {
-        mSize -= nameLength;
+        mSize -= mNameLength;
     }
     
-    nameLength = name.length();
-    this->name = name;
+    mNameLength = name.length();
+    this->mName = name;
     
-    mSize += nameLength;
+    mSize += mNameLength;
 }
 
 char* Root::GetBytes(char* buffer)
 {
     char* ptr = buffer;
-    ptr = sw->writeBytes(ptr, &header);
-    ptr = sw->writeBytes(ptr, &containerType);
-    ptr = sw->writeBytes(ptr, &nameLength);
-    ptr = sw->writeBytes(ptr, &name);
+    ptr = sw->writeBytes(ptr, &mHeader);
+    ptr = sw->writeBytes(ptr, &mContainerType);
+    ptr = sw->writeBytes(ptr, &mNameLength);
+    ptr = sw->writeBytes(ptr, &mName);
     ptr = sw->writeBytes(ptr, &mSize);
     ptr = sw->writeBytes(ptr, &mObjectsCount);
 
@@ -56,4 +60,33 @@ bool Root::AddObject(Object* object)
     return true;
 }
 
+void Root::Deserialize(char* data)
+{
+    char* ptr = data;
+    
+    std::string header;
+    ptr = sw->readBytes(ptr, &header, 4);
+    if(header.compare(mHeader))
+    {
+        std::cout << "Can't deserialize Root: wrong header!" << std::endl;
+        return;
+    }
+    
+    char containerType;
+    ptr = sw->readBytes(ptr, &containerType);
+    if(containerType != mContainerType)
+    {
+        std::cout << "Can't deserialize Root: wrong Container Type!" << std::endl;
+        return;
+    }
+    
+    ptr = sw->readBytes(ptr, &mNameLength);
+    ptr = sw->readBytes(ptr, &mName, mNameLength);
+    ptr = sw->readBytes(ptr, &mSize);
+    ptr = sw->readBytes(ptr, &mObjectsCount);
+    
+    
+    std::cout << mObjectsCount << std::endl;
+    
+}
 

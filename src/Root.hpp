@@ -15,10 +15,10 @@
 class Root
 {
 public:
-    const std::string header = "ROOT";
-    const char containerType = EnumContainerType::ROOT;
-    short nameLength;       // short    ???
-    std::string name;
+    const std::string mHeader = "ROOT";
+    const char mContainerType = EnumContainerType::ROOT;
+    short mNameLength;       // short    ???
+    std::string mName;
     
 private:
     SerializationWriter* sw;
@@ -31,6 +31,7 @@ private:
 public:
     
     Root(std::string name);
+    Root();
     ~Root();
     
     void setName(std::string name);
@@ -42,4 +43,6 @@ public:
     }
     
     bool AddObject(Object* object);
+    
+    void Deserialize(char* data);
 };
