@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "utils/Log.hpp"
-#include "SerializationWriter.hpp"
+#include "ReadWriteBytes.hpp"
 #include "Root.hpp"
 #include "Object.hpp"
 #include "Field.hpp"
@@ -29,10 +29,10 @@ char* testSerialisation(char* buffer)
     root->AddObject(object);
     
     size_t bufferSize = 0;         // field->GetFieldSize()
-//    bufferSize += field->GetFieldSize();
-//    bufferSize += array->GetArraySize();
-//    bufferSize += object->GetObjectSize();
-    bufferSize += root->GetRootSize();
+//    bufferSize += field->GetSize();
+//    bufferSize += array->GetSize();
+//    bufferSize += object->GetSize();
+    bufferSize += root->GetSize();
     
     buffer = new char[bufferSize];
     char* ptr = buffer;

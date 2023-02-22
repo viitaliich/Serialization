@@ -2,38 +2,23 @@
 #include "utils/Log.hpp"
 
 
-Object::Object(std::string name):        // int ???
-    mSize(0)
+Object::Object(std::string name)
 {
-    sw = new SerializationWriter();
+    mContainerType = EnumContainerType::OBJECT;
     setName(name);
-    mSize += sizeof(mContainerType) + sizeof(mNameLength) + sizeof(mSize) + sizeof(mFieldsCount) + sizeof(mArraysCount);
-}
-
-Object::~Object()
-{
-    delete sw;
-    delete mFields;
-    delete mArrays;
+    mSize += sizeof(mFieldsCount) + sizeof(mArraysCount);
 }
 
 Object::Object()
 {
+    mContainerType = EnumContainerType::OBJECT;
 }
 
-void Object::setName(std::string name)
+Object::~Object()
 {
-    if (!this->mName.empty())
-    {
-        mSize -= mNameLength;
-    }
-    
-    mNameLength = name.length();
-    this->mName = name;
-    
-    mSize += mNameLength;
+    delete mFields;
+    delete mArrays;
 }
-
 
 char* Object::GetBytes(char* buffer)
 {
@@ -58,12 +43,11 @@ char* Object::GetBytes(char* buffer)
     return ptr;
 }
 
-
 bool Object::AddField(Field* field)
 {
     if(mFields == nullptr || field == nullptr) return false;
     mFields->push_back(field);
-    mSize += field->GetFieldSize();
+    mSize += field->GetSize();
     mFieldsCount = mFields->size();
     return true;
 }
@@ -72,7 +56,7 @@ bool Object::AddArray(Array* array)
 {
     if(mArrays == nullptr || array == nullptr) return false;
     mArrays->push_back(array);
-    mSize += array->GetArraySize();
+    mSize += array->GetSize();
     mArraysCount = mArrays->size();
     return true;
 }

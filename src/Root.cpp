@@ -2,21 +2,20 @@
 #include "utils/Log.hpp"
 
 
-Root::Root(std::string name):        // int ???
-    mSize(0)
+Root::Root(std::string name)
 {
-    sw = new SerializationWriter();
+    mContainerType = EnumContainerType::ROOT;
     setName(name);
-    mSize += mHeader.length() + sizeof(mContainerType) + sizeof(mNameLength) + sizeof(mSize) + sizeof(mObjectsCount);
+    mSize += mHeader.length() + sizeof(mVersion) + sizeof(mObjectsCount);
 }
 
 Root::Root()
 {
+    mContainerType = EnumContainerType::ROOT;
 }
 
 Root::~Root()
 {
-    delete sw;
     for(size_t i = 0; i < mObjectsCount; i++)
     {
         delete (*mObjects)[i];
@@ -24,23 +23,11 @@ Root::~Root()
     delete mObjects;
 }
 
-void Root::setName(std::string name)
-{
-    if (!this->mName.empty())
-    {
-        mSize -= mNameLength;
-    }
-    
-    mNameLength = name.length();
-    this->mName = name;
-    
-    mSize += mNameLength;
-}
-
 char* Root::GetBytes(char* buffer)
 {
     char* ptr = buffer;
     ptr = sw->writeBytes(ptr, &mHeader);
+    ptr = sw->writeBytes(ptr, &mVersion);
     ptr = sw->writeBytes(ptr, &mContainerType);
     ptr = sw->writeBytes(ptr, &mNameLength);
     ptr = sw->writeBytes(ptr, &mName);
@@ -59,7 +46,7 @@ bool Root::AddObject(Object* object)
 {
     if(mObjects == nullptr || object == nullptr) return false;
     mObjects->push_back(object);
-    mSize += object->GetObjectSize();
+    mSize += object->GetSize();
     mObjectsCount = mObjects->size();
     return true;
 }
@@ -73,6 +60,14 @@ char* Root::Deserialize(char* data)
     if(header.compare(mHeader))
     {
         std::cout << "Can't deserialize Root: wrong header!" << std::endl;
+        return nullptr;
+    }
+    
+    short version;
+    ptr = sw->readBytes(ptr, &version);
+    if(version != mVersion)
+    {
+        std::cout << "Can't deserialize Root: wrong version!" << std::endl;
         return nullptr;
     }
     
@@ -101,6 +96,7 @@ char* Root::Deserialize(char* data)
 
 void Root::LogRoot()
 {
+    std::cout << "mVersion - " << mVersion << std::endl;
     std::cout << "mHeader - " << mHeader << std::endl;
     std::cout << "mContainerType - " << (int)mContainerType << std::endl;
     std::cout << "mNameLength - " << mNameLength << std::endl;

@@ -3,18 +3,12 @@
 
 Field::Field()
 {
+    mContainerType = EnumContainerType::FIELD;
 }
 
 Field::~Field()
 {
-    delete sw;
     delete[] mData;
-}
-
-void Field::setName(std::string name)
-{
-    mNameLength = name.length();
-    this->mName = name;
 }
 
 char* Field::GetBytes(char* buffer)
@@ -25,6 +19,7 @@ char* Field::GetBytes(char* buffer)
     ptr = sw->writeBytes(ptr, &mName);
     ptr = sw->writeBytes(ptr, &mDataType);
     ptr = sw->writeBytes(ptr, &mDataSize);
+    ptr = sw->writeBytes(ptr, &mSize);
     ptr = sw->writeBytes(ptr, mData, mDataSize);
     return ptr;
 }
@@ -45,6 +40,7 @@ char* Field::Deserialize(char* data)
     ptr = sw->readBytes(ptr, &mName, mNameLength);
     ptr = sw->readBytes(ptr, &mDataType);
     ptr = sw->readBytes(ptr, &mDataSize);
+    ptr = sw->readBytes(ptr, &mSize);
     mData = new char[mDataSize];
     ptr = sw->readBytes(ptr, mData, mDataSize);
     

@@ -3,25 +3,12 @@
 
 Array::Array()
 {
+    mContainerType = EnumContainerType::ARRAY;
 }
 
 Array::~Array()
 {
-    delete sw;
     delete[] mData;
-}
-
-void Array::setName(std::string name)
-{
-    if (!this->mName.empty())
-    {
-        mSize -= mNameLength;
-    }
-    
-    mNameLength = name.length();
-    this->mName = name;
-    
-    mSize += mNameLength;
 }
 
 char* Array::GetBytes(char* buffer)

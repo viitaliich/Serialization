@@ -5,24 +5,23 @@
 #include <vector>
 
 #include "ContainerType.hpp"
-#include "SerializationWriter.hpp"
+#include "ReadWriteBytes.hpp"
 #include "Field.hpp"
 #include "Array.hpp"
 #include "Object.hpp"
+#include "Base.hpp"
 
 // TODO: make Objects contain Objects instead of Root (Data Nodels ...)
 
-class Root
+class Root : public Base
 {
+    
 public:
+    
     const std::string mHeader = "ROOT";
-    const char mContainerType = EnumContainerType::ROOT;
-    short mNameLength;       // short    ???
-    std::string mName;
+    const short mVersion = 0x0100;    // major and minor revisions format
     
 private:
-    SerializationWriter* sw;
-    short mSize;
     
     // use hash table instead (Ep. 10) ???
     std::vector<Object*>* mObjects = new std::vector<Object*>;
@@ -34,17 +33,12 @@ public:
     Root();
     ~Root();
     
-    void setName(std::string name);
     char* GetBytes(char* buffer);
-    
-    inline size_t GetRootSize()
-    {
-        return mSize;
-    }
     
     bool AddObject(Object* object);
     
     char* Deserialize(char* data);
     
     void LogRoot();
+    
 };

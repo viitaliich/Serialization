@@ -4,6 +4,8 @@
 #include <iostream>
 #include "utils/Log.hpp"
 
+// TODO: use it as functions, not object methods (statically?) ???
+
 class ReadWriteBytes
 {
 public:

@@ -5,59 +5,46 @@
 
 #include "Type.hpp"
 #include "ContainerType.hpp"
-#include "SerializationWriter.hpp"
+#include "ReadWriteBytes.hpp"
+#include "Base.hpp"
 
 
-class Field
+class Field : public Base
 {
 public:
     
-    const char mContainerType = EnumContainerType::FIELD;
-    short mNameLength;       // short    ???
-    std::string mName;
     char mDataType;
     short mDataSize;
     char* mData;
-    
-private:
-    SerializationWriter* sw;
     
 public:
     
     template <typename T>
     Field(std::string name, char type, const T* value)
     {
-        sw = new SerializationWriter();
-        setName(name);
+        mContainerType = EnumContainerType::FIELD;
         mDataType = type;
         mDataSize = sizeof(T);
-        
         this->mData = new char[mDataSize];
+        mSize += sizeof(mDataType) + sizeof(mDataSize) + mDataSize;
         sw->writeBytes(this->mData, value);
     }
     
     Field(std::string name, char type, const std::string* value)
     {
-        sw = new SerializationWriter();
+        mContainerType = EnumContainerType::FIELD;
         setName(name);
         mDataType = type;
         mDataSize = value->length();
-        
         this->mData = new char[mDataSize];
+        mSize += sizeof(mDataType) + sizeof(mDataSize) + mDataSize;
         sw->writeBytes(this->mData, value);
     }
     
     Field();
     ~Field();
     
-    void setName(std::string name);
     char* GetBytes(char* buffer);
-    
-    inline size_t GetFieldSize() const
-    {
-        // can be modified (depends on class members) ???
-        return sizeof(mContainerType) + sizeof(mNameLength) + mNameLength + sizeof(mDataType) + sizeof(mDataSize) + mDataSize;
-    }
     
     char* Deserialize(char* data);
     
