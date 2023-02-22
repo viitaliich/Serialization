@@ -15,11 +15,9 @@ public:
     
     const EnumContainerType mEnumContainerType;
     
-    
 public:
     
     ContainerType();
     ~ContainerType();
-    
     
 };

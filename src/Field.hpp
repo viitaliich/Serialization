@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 
+#include "Type.hpp"
 #include "ContainerType.hpp"
 #include "SerializationWriter.hpp"
 
@@ -11,12 +12,12 @@ class Field
 {
 public:
     
-    const char containerType = EnumContainerType::FIELD;
-    short nameLength;       // short    ???
-    std::string name;
-    char dataType;
-    short dataSize;
-    char* data;
+    const char mContainerType = EnumContainerType::FIELD;
+    short mNameLength;       // short    ???
+    std::string mName;
+    char mDataType;
+    short mDataSize;
+    char* mData;
     
 private:
     SerializationWriter* sw;
@@ -28,32 +29,37 @@ public:
     {
         sw = new SerializationWriter();
         setName(name);
-        dataType = type;        // ??? do we need this?
-        dataSize = sizeof(T);
+        mDataType = type;
+        mDataSize = sizeof(T);
         
-        this->data = new char[dataSize];
-        sw->writeBytes(this->data, value);
+        this->mData = new char[mDataSize];
+        sw->writeBytes(this->mData, value);
     }
     
     Field(std::string name, char type, const std::string* value)
     {
         sw = new SerializationWriter();
         setName(name);
-        dataType = type;        // ??? do we need this?
-        dataSize = value->length();
+        mDataType = type;
+        mDataSize = value->length();
         
-        this->data = new char[dataSize];
-        sw->writeBytes(this->data, value);
+        this->mData = new char[mDataSize];
+        sw->writeBytes(this->mData, value);
     }
     
+    Field();
     ~Field();
     
     void setName(std::string name);
     char* GetBytes(char* buffer);
     
-    inline size_t GetFieldSize()
+    inline size_t GetFieldSize() const
     {
         // can be modified (depends on class members) ???
-        return sizeof(containerType) + sizeof(nameLength) + nameLength + sizeof(dataType) + sizeof(dataSize) + dataSize;
+        return sizeof(mContainerType) + sizeof(mNameLength) + mNameLength + sizeof(mDataType) + sizeof(mDataSize) + mDataSize;
     }
+    
+    char* Deserialize(char* data);
+    
+    void LogField();
 };

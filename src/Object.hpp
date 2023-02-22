@@ -37,7 +37,7 @@ public:
     void setName(std::string name);
     char* GetBytes(char* buffer);
     
-    inline size_t GetObjectSize()
+    inline size_t GetObjectSize() const
     {
         return mSize;
     }
@@ -45,7 +45,7 @@ public:
     bool AddField(Field* field);
     bool AddArray(Array* array);
     
-    void Deserialize(char* data);
+    char* Deserialize(char* data);
     
     void LogObject();
 };

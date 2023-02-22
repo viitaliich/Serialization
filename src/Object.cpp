@@ -21,7 +21,6 @@ Object::Object()
 {
 }
 
-
 void Object::setName(std::string name)
 {
     if (!this->mName.empty())
@@ -78,7 +77,7 @@ bool Object::AddArray(Array* array)
     return true;
 }
 
-void Object::Deserialize(char* data)
+char* Object::Deserialize(char* data)
 {
     char* ptr = data;
     
@@ -87,19 +86,31 @@ void Object::Deserialize(char* data)
     if(containerType != mContainerType)
     {
         std::cout << "Can't deserialize Object: wrong Container Type!" << std::endl;
-        return;
+        return nullptr;
     }
     
     ptr = sw->readBytes(ptr, &mNameLength);
     ptr = sw->readBytes(ptr, &mName, mNameLength);
     ptr = sw->readBytes(ptr, &mSize);
     ptr = sw->readBytes(ptr, &mFieldsCount);
-    // TODO: Fileds
     ptr = sw->readBytes(ptr, &mArraysCount);
-    // TODO: Arrays
     
-//    std::cout << mObjectsCount << std::endl;
+    for(size_t i = 0; i < mFieldsCount; i++)
+    {
+        Field* field = new Field();
+        
+        ptr = field->Deserialize(ptr);
+        mFields->push_back(field);
+    }
     
+    for(size_t i = 0; i < mArraysCount; i++)
+    {
+        Array* array = new Array();
+        ptr = array->Deserialize(ptr);
+        mArrays->push_back(array);
+    }
+    
+    return ptr;
 }
 
 void Object::LogObject()
@@ -108,17 +119,18 @@ void Object::LogObject()
     std::cout << "mNameLength - " << mNameLength << std::endl;
     std::cout << "mName - " << mName << std::endl;
     std::cout << "mSize - " << mSize << std::endl;
-    std::cout << "mArraysCount - " << mArraysCount << std::endl;
-    for(size_t i = 0; i < mArraysCount; i++)
-    {
-        std::cout << "--Array " << i << std::endl;
-    }
     std::cout << "mFieldsCount - " << mFieldsCount << std::endl;
+    std::cout << "mArraysCount - " << mArraysCount << std::endl;
+    
     for(size_t i = 0; i < mFieldsCount; i++)
     {
         std::cout << "--Field " << i << std::endl;
+        (*mFields)[i]->LogField();
     }
     
+    for(size_t i = 0; i < mArraysCount; i++)
+    {
+        std::cout << "--Array " << i << std::endl;
+        (*mArrays)[i]->LogArray();
+    }
 }
-
-

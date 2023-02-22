@@ -49,26 +49,20 @@ public:
         return ptr;
     }
     
+    char* readBytes(char* buffer, std::string* value, short valueLength)
+    {
+        char* ptr = buffer;
+        std::string strValue(ptr, valueLength);
+        *value = strValue;
+        ptr += valueLength;
+        return ptr;
+    }
+    
     template <typename T>
     char* readBytes(char* buffer, T* value, short valueLength)        // short -> size_t
     {
         char* ptr = buffer;
-        ptr = readBytes(ptr, &valueLength);
         std::memcpy(value, ptr, valueLength);
-        ptr += valueLength;
-        
-        return ptr;
-    }
-    
-    char* readBytes(char* buffer, std::string* value, short valueLength)
-    {
-//        char* val;
-        char* ptr = buffer;
-//        ptr = readBytes(ptr, val, valueLength);
-//        *value = val;
-        
-        std::string header(ptr, valueLength);
-        *value = header;
         ptr += valueLength;
         return ptr;
     }

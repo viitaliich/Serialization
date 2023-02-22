@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 
+#include "Type.hpp"
 #include "ContainerType.hpp"
 #include "SerializationWriter.hpp"
 
@@ -11,13 +12,13 @@ class Array
 {
 public:
     
-    const char containerType = EnumContainerType::ARRAY;
-    short nameLength;       // short    ???
-    std::string name;
-    char dataType;
-    short dataCount;          // size_t ???
-    short dataSize;
-    char* data;
+    const char mContainerType = EnumContainerType::ARRAY;
+    short mNameLength;       // short    ???
+    std::string mName;
+    char mDataType;
+    short mDataCount;          // size_t ???
+    short mDataSize;
+    char* mData;
     
 private:
     SerializationWriter* sw;
@@ -30,22 +31,26 @@ public:
     {
         sw = new SerializationWriter();
         setName(name);
-        dataType = type;        // ??? do we need this?
-        dataSize = sizeof(T);
-        dataCount = length;
-        mSize += sizeof(containerType) + sizeof(nameLength) + sizeof(mSize) + sizeof(dataType) + sizeof(dataCount) + sizeof(dataSize) + dataSize;
-        this->data = new char[dataSize ];
-        sw->writeBytes(data, value, dataSize );
+        mDataType = type;
+        mDataSize = sizeof(T);
+        mDataCount = length;
+        mSize += sizeof(mContainerType) + sizeof(mNameLength) + sizeof(mSize) + sizeof(mDataType) + sizeof(mDataCount) + sizeof(mDataSize) + mDataSize;
+        this->mData = new char[mDataSize ];
+        sw->writeBytes(mData, value, mDataSize );
     }
     
+    Array();
     ~Array();
     
     void setName(std::string name);
     char* GetBytes(char* buffer);
     
-    inline size_t GetArraySize()
+    inline size_t GetArraySize() const
     {
-        // can be modified (depends on class members) ???
         return mSize;
     }
+    
+    char* Deserialize(char* data);
+    
+    void LogArray();
 };

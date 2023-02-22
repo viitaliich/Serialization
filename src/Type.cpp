@@ -13,7 +13,6 @@ Type::~Type()
 
 size_t Type::GetSize(char type)
 {
-   
     switch(type)
     {
         case CHAR:

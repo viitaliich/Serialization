@@ -64,7 +64,7 @@ bool Root::AddObject(Object* object)
     return true;
 }
 
-void Root::Deserialize(char* data)
+char* Root::Deserialize(char* data)
 {
     char* ptr = data;
     
@@ -73,7 +73,7 @@ void Root::Deserialize(char* data)
     if(header.compare(mHeader))
     {
         std::cout << "Can't deserialize Root: wrong header!" << std::endl;
-        return;
+        return nullptr;
     }
     
     char containerType;
@@ -81,7 +81,7 @@ void Root::Deserialize(char* data)
     if(containerType != mContainerType)
     {
         std::cout << "Can't deserialize Root: wrong Container Type!" << std::endl;
-        return;
+        return nullptr;
     }
     
     ptr = sw->readBytes(ptr, &mNameLength);
@@ -92,12 +92,11 @@ void Root::Deserialize(char* data)
     for(size_t i = 0; i < mObjectsCount; i++)
     {
         Object* object = new Object();
-        object->Deserialize(ptr);
+        ptr = object->Deserialize(ptr);
         mObjects->push_back(object);
     }
     
-//    std::cout << mObjectsCount << std::endl;
-    
+    return ptr;
 }
 
 void Root::LogRoot()
@@ -113,6 +112,4 @@ void Root::LogRoot()
         std::cout << "-Object " << i << std::endl;
         (*mObjects)[i]->LogObject();
     }
-    
 }
-

@@ -18,7 +18,7 @@ char* testSerialisation(char* buffer)
     std::string val = "HELLO";
     int arr[] = {1, 2, 3};
     
-    Field* field = new Field(str(val), EnumType::INT, &val);
+    Field* field = new Field(str(val), EnumType::STRING, &val);
     Array* array = new Array(str(arr), EnumType::INT, &arr, 3);
     
     Object* object = new Object(str(object));
@@ -52,8 +52,9 @@ char* testSerialisation(char* buffer)
 
 void testDeserialisation(char* data)
 {
+    char* ptr = data;
     Root* root = new Root();
-    root->Deserialize(data);
+    ptr = root->Deserialize(ptr);
     root->LogRoot();
     
     delete root;

@@ -11,8 +11,8 @@ enum EnumType : char
     LONG,
     FLOAT,
     DOUBLE,
-    BOOL
-
+    BOOL,
+    STRING
 };
 
 class Type{
@@ -29,4 +29,3 @@ public:
     size_t GetSize(char type);
     
 };
-
