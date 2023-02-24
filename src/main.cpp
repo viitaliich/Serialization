@@ -4,31 +4,42 @@
 #include "ReadWriteBytes.hpp"
 #include "Root.hpp"
 #include "Object.hpp"
-#include "Field.hpp"
 #include "Array.hpp"
-#include "Type.hpp"
+#include "Field.hpp"
 
 #define str(s) #s
 
 
+class SandBox
+{
+public:
+    int valInt;
+    std::string valStr;
+    short arr[10] = {1, 2, 3, 4, 5};
+    
+    SandBox()
+    {
+        valInt = 8;
+        valStr = "Hello";
+    }
+};
+
+
 char* testSerialisation(char* buffer)
 {
+    SandBox* sandbox = new SandBox();
+
+    Field* field = new Field(str(sandbox->valInt), EnumType::INT, &sandbox->valInt);
+    Array* array = new Array(str(sandbox->arr), EnumType::SHORT, &sandbox->arr, 10);
     
-//    int val = 8;
-    std::string val = "HELLO";
-    int arr[] = {1, 2, 3};
-    
-    Field* field = new Field(str(val), EnumType::STRING, &val);
-    Array* array = new Array(str(arr), EnumType::INT, &arr, 3);
-    
-    Object* object = new Object(str(object));
+    Object* object = new Object(str(sandbox));
     object->AddArray(array);
     object->AddField(field);
     
     Root* root = new Root(str(root));
     root->AddObject(object);
     
-    size_t bufferSize = 0;         // field->GetFieldSize()
+    size_t bufferSize = 0;
 //    bufferSize += field->GetSize();
 //    bufferSize += array->GetSize();
 //    bufferSize += object->GetSize();
@@ -44,8 +55,8 @@ char* testSerialisation(char* buffer)
        
     logBytes(buffer, bufferSize);
     
-    const char* filePath = "/Users/vklimov/dev/Serialization/Serialization/src/test_file.txt";
-    logBytesToFile(filePath, buffer, bufferSize);
+//    const char* filePath = "/Users/vklimov/dev/Serialization/Serialization/src/test_file.txt";
+//    logBytesToFile(filePath, buffer, bufferSize);
     
     return buffer;
 }
@@ -57,13 +68,19 @@ void testDeserialisation(char* data)
     ptr = root->Deserialize(ptr);
     root->LogRoot();
     
+    Object* object = root->FindObject("sandbox");
+    Field* field = object->FindField("sandbox->valInt");
+    int intVal;
+    std::memcpy(&intVal, field->mData, sizeof(int));
+    std::cout << "INT_VAL = " << intVal << std::endl;
+    
     delete root;
 }
 
 
 int main(int argc, const char * argv[]) {
     
-    char* data = testSerialisation(data);
+    char* data = testSerialisation(nullptr);
     testDeserialisation(data);
     
     return 0;

@@ -2,13 +2,17 @@
 
 #include <string>
 #include <iostream>
+
 #include "utils/Log.hpp"
 
+
 // TODO: use it as functions, not object methods (statically?) ???
+// TODO: Reflection ???
 
 class ReadWriteBytes
 {
 public:
+    
     template <typename T>
     char* writeBytes(char* buffer, const T* value)
     {
@@ -67,6 +71,7 @@ public:
     
 public:
     
-    ReadWriteBytes();
-    ~ReadWriteBytes();
+    ReadWriteBytes(){}
+    ~ReadWriteBytes(){}
+    
 };

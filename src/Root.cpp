@@ -1,6 +1,4 @@
 #include "Root.hpp"
-#include "utils/Log.hpp"
-
 
 Root::Root(std::string name)
 {
@@ -92,6 +90,19 @@ char* Root::Deserialize(char* data)
     }
     
     return ptr;
+}
+
+Object* Root::FindObject(std::string name)
+{
+    for(size_t i = 0; i < mObjectsCount; i++)
+    {
+        if(!(*mObjects)[i]->GetName().compare(name))
+        {
+            return (*mObjects)[i];
+        }
+    }
+    std::cout << "ERROR: Can't find Object with such name" << std::endl;
+    return nullptr;
 }
 
 void Root::LogRoot()

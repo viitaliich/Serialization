@@ -3,9 +3,6 @@
 #include <string>
 #include <iostream>
 
-#include "Type.hpp"
-#include "ContainerType.hpp"
-#include "ReadWriteBytes.hpp"
 #include "Base.hpp"
 
 
@@ -23,6 +20,7 @@ public:
     Field(std::string name, char type, const T* value)
     {
         mContainerType = EnumContainerType::FIELD;
+        setName(name);
         mDataType = type;
         mDataSize = sizeof(T);
         this->mData = new char[mDataSize];

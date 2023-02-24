@@ -4,8 +4,6 @@
 #include <iostream>
 #include <vector>
 
-#include "ContainerType.hpp"
-#include "ReadWriteBytes.hpp"
 #include "Field.hpp"
 #include "Array.hpp"
 #include "Object.hpp"
@@ -38,6 +36,8 @@ public:
     bool AddObject(Object* object);
     
     char* Deserialize(char* data);
+    
+    Object* FindObject(std::string name);
     
     void LogRoot();
     

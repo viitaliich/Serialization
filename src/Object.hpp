@@ -4,8 +4,6 @@
 #include <iostream>
 #include <vector>
 
-#include "ContainerType.hpp"
-#include "ReadWriteBytes.hpp"
 #include "Field.hpp"
 #include "Array.hpp"
 #include "Base.hpp"
@@ -33,6 +31,9 @@ public:
     char* GetBytes(char* buffer);
     
     char* Deserialize(char* data);
+    
+    Field* FindField(std::string name);
+    Array* FindArray(std::string name);
     
     void LogObject();
 };

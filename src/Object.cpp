@@ -1,5 +1,4 @@
 #include "Object.hpp"
-#include "utils/Log.hpp"
 
 
 Object::Object(std::string name)
@@ -95,6 +94,32 @@ char* Object::Deserialize(char* data)
     }
     
     return ptr;
+}
+
+Field* Object::FindField(std::string name)
+{
+    for(size_t i = 0; i < mFieldsCount; i++)
+    {
+        if(!(*mFields)[i]->GetName().compare(name))
+        {
+            return (*mFields)[i];
+        }
+    }
+    std::cout << "ERROR: Can't find Field with such name" << std::endl;
+    return nullptr;
+}
+
+Array* Object::FindArray(std::string name)
+{
+    for(size_t i = 0; i < mArraysCount; i++)
+    {
+        if(!(*mArrays)[i]->GetName().compare(name))
+        {
+            return (*mArrays)[i];
+        }
+    }
+    std::cout << "ERROR: Can't find Array with such name" << std::endl;
+    return nullptr;
 }
 
 void Object::LogObject()
