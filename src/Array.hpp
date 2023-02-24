@@ -2,6 +2,7 @@
 
 #include <string>
 #include <iostream>
+#include <math.h>
 
 #include "Base.hpp"
 
@@ -23,11 +24,35 @@ public:
         mContainerType = EnumContainerType::ARRAY;
         setName(name);
         mDataType = type;
-        mDataSize = sizeof(T);
         mDataCount = length;
-        mSize += sizeof(mDataType) + sizeof(mDataCount) + sizeof(mDataSize) + mDataSize;
-        this->mData = new char[mDataSize];
-        sw->writeBytes(mData, value, mDataSize);
+        
+        if(type != EnumType::BOOL)
+        {
+            mDataSize = sizeof(T);
+            mSize += sizeof(mDataType) + sizeof(mDataCount) + sizeof(mDataSize) + mDataSize;
+            this->mData = new char[mDataSize];
+            sw->writeBytes(mData, value, mDataSize);
+        }
+        else
+        {
+            mDataSize = (int)(mDataCount/8) + 1;
+            mSize += sizeof(mDataType) + sizeof(mDataCount) + sizeof(mDataSize) + mDataSize;
+            mData = new char[mDataSize];
+            
+            char* ptr = mData;
+            char val = 0;
+            for (int i = 0; i < length; i++)
+            {
+                if(i > 0 && (i % 8) == 0)
+                {
+                    ptr = sw->writeBytes(ptr, &val);
+                    val = 0;
+                }
+                val ^= ((*value)[i] << i % 8);
+            }
+            
+            ptr = sw->writeBytes(ptr, &val);
+        }
     }
     
     Array();

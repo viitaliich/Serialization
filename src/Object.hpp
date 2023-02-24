@@ -13,7 +13,7 @@ class Object : public Base
 {
 private:
 
-    // use hash table instead (Ep. 10) ???
+    // TODO: use hash table instead (Ep. 10) ???
     std::vector<Field*>* mFields = new std::vector<Field*>;
     std::vector<Array*>* mArrays = new std::vector<Array*>;
     short mFieldsCount;

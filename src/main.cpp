@@ -15,7 +15,7 @@ class SandBox
 public:
     int valInt;
     std::string valStr;
-    short arr[10] = {1, 2, 3, 4, 5};
+    bool arr[10] = {true, true, true};
     
     SandBox()
     {
@@ -30,7 +30,7 @@ char* testSerialisation(char* buffer)
     SandBox* sandbox = new SandBox();
 
     Field* field = new Field(str(sandbox->valInt), EnumType::INT, &sandbox->valInt);
-    Array* array = new Array(str(sandbox->arr), EnumType::SHORT, &sandbox->arr, 10);
+    Array* array = new Array(str(sandbox->arr), EnumType::BOOL, &sandbox->arr, 10);
     
     Object* object = new Object(str(sandbox));
     object->AddArray(array);

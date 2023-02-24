@@ -61,6 +61,23 @@ void Array::LogArray()
     std::cout << "mDataSize - " << mDataSize << std::endl;
     
     char* ptr = mData;
+    
+    if(mDataType == EnumType::BOOL)
+    {
+        char boolResult;
+        for(int i = 0; i < mDataCount/8 + 1; i++)
+        {
+            sw->readBytes(ptr, &boolResult);
+            for(char j = 0; j < 8; j++)
+            {
+                std::cout << "---ArrayElement " << j << " ";
+                std::cout << (bool)((int)boolResult & ((int)pow(2, j))) << std::endl;
+            }
+            ptr += sizeof(char);
+        }
+        return;
+    }
+    
     for(size_t i = 0; i < mDataCount; i++)
     {
         std::cout << "---ArrayElement " << i << " ";
@@ -71,7 +88,6 @@ void Array::LogArray()
         long longResult;
         float floatResult;
         double doubleResult;
-        bool boolResult;
         
         switch (mDataType) {
             case EnumType::CHAR:
@@ -105,9 +121,7 @@ void Array::LogArray()
                 ptr += sizeof(doubleResult);
                 break;
             case EnumType::BOOL:
-                sw->readBytes(ptr, &boolResult);
-                std::cout << boolResult << std::endl;
-                ptr += sizeof(boolResult);
+                
                 break;
             case EnumType::STRING:
                 std::cout << std::string(ptr, mDataSize/mDataCount) << std::endl;

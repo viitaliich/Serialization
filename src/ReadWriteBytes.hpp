@@ -40,8 +40,6 @@ public:
         return ptr;
     }
     
-    // TODO: list of 8 booleans in 1 byte
-    
     template <typename T>
     char* readBytes(char* buffer, T* value)
     {

@@ -21,7 +21,7 @@ public:
     
 private:
     
-    // use hash table instead (Ep. 10) ???
+    // TODO: use hash table instead (Ep. 10) ???
     std::vector<Object*>* mObjects = new std::vector<Object*>;
     short mObjectsCount;
     
