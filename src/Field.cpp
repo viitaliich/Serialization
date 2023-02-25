@@ -3,7 +3,7 @@
 
 Field::Field()
 {
-    mContainerType = EnumContainerType::FIELD;
+    mContainerType = EnumWrapperType::FIELD;
 }
 
 Field::~Field()
@@ -11,7 +11,7 @@ Field::~Field()
     delete[] mData;
 }
 
-char* Field::GetBytes(char* buffer)
+char* Field::PackBytes(char* buffer)
 {
     char* ptr = buffer;
     ptr = sw->writeBytes(ptr, &mContainerType);

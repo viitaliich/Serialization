@@ -3,14 +3,14 @@
 
 Object::Object(std::string name)
 {
-    mContainerType = EnumContainerType::OBJECT;
+    mContainerType = EnumWrapperType::OBJECT;
     setName(name);
     mSize += sizeof(mFieldsCount) + sizeof(mArraysCount);
 }
 
 Object::Object()
 {
-    mContainerType = EnumContainerType::OBJECT;
+    mContainerType = EnumWrapperType::OBJECT;
 }
 
 Object::~Object()
@@ -19,7 +19,7 @@ Object::~Object()
     delete mArrays;
 }
 
-char* Object::GetBytes(char* buffer)
+char* Object::PackBytes(char* buffer)
 {
     char* ptr = buffer;
     ptr = sw->writeBytes(ptr, &mContainerType);
@@ -31,12 +31,12 @@ char* Object::GetBytes(char* buffer)
 
     for(size_t i = 0; i < mFields->size(); i++)
     {
-        ptr = (*mFields)[i]->GetBytes(ptr);
+        ptr = (*mFields)[i]->PackBytes(ptr);
     }
 
     for(size_t i = 0; i < mArrays->size(); i++)
     {
-        ptr = (*mArrays)[i]->GetBytes(ptr);
+        ptr = (*mArrays)[i]->PackBytes(ptr);
     }
     
     return ptr;

@@ -16,10 +16,13 @@ public:
     
 public:
     
+    // TODO: use abstract builder / abstract factory pattern
+    // can be helpful in template redefinition
+    
     template <typename T>
     Field(std::string name, char type, const T* value)
     {
-        mContainerType = EnumContainerType::FIELD;
+        mContainerType = EnumWrapperType::FIELD;
         setName(name);
         mDataType = type;
         mDataSize = sizeof(T);
@@ -30,7 +33,7 @@ public:
     
     Field(std::string name, char type, const std::string* value)
     {
-        mContainerType = EnumContainerType::FIELD;
+        mContainerType = EnumWrapperType::FIELD;
         setName(name);
         mDataType = type;
         mDataSize = value->length();
@@ -42,7 +45,7 @@ public:
     Field();
     ~Field();
     
-    char* GetBytes(char* buffer);
+    char* PackBytes(char* buffer);
     
     char* Deserialize(char* data);
     

@@ -9,6 +9,10 @@
 
 #define str(s) #s
 
+// TODO: serialise int16_t, int 32_t, ...
+// TODO: serialise vector, ...
+
+// TODO: reflection, RTTI
 
 class SandBox
 {
@@ -48,10 +52,10 @@ char* testSerialisation(char* buffer)
     buffer = new char[bufferSize];
     char* ptr = buffer;
     
-//    ptr = field->GetBytes(ptr);
-//    ptr = array->GetBytes(ptr);
-//    ptr = object->GetBytes(ptr);
-    ptr = root->GetBytes(ptr);
+//    ptr = field->PackBytes(ptr);
+//    ptr = array->PackBytes(ptr);
+//    ptr = object->PackBytes(ptr);
+    ptr = root->PackBytes(ptr);
        
     logBytes(buffer, bufferSize);
     

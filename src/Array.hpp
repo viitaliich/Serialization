@@ -21,7 +21,7 @@ public:
     template <typename T>
     Array(std::string name, char type, const T* value, const short length)        // int ???
     {
-        mContainerType = EnumContainerType::ARRAY;
+        mContainerType = EnumWrapperType::ARRAY;
         setName(name);
         mDataType = type;
         mDataCount = length;
@@ -58,7 +58,7 @@ public:
     Array();
     ~Array();
     
-    char* GetBytes(char* buffer);
+    char* PackBytes(char* buffer);
     
     char* Deserialize(char* data);
     

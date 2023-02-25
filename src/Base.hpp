@@ -6,7 +6,7 @@
 #include "ReadWriteBytes.hpp"
 
 
-enum EnumContainerType : char
+enum EnumWrapperType : char
 {
     UNKNOWN_CONTAINER = 0,
     FIELD,
@@ -14,6 +14,9 @@ enum EnumContainerType : char
     OBJECT,
     ROOT
 };
+
+// TODO: serialise int16_t, int 32_t, ...
+// TODO: serialise vector, ...
 
 enum EnumType : char
 {
@@ -30,25 +33,21 @@ enum EnumType : char
 
 class Base
 {
-
-private:
-    
-    
-    
 protected:
-
     ReadWriteBytes* sw;
     char mContainerType;
     short mNameLength;       // short    ???
     std::string mName;
     short mSize;
     
-public:
-    
+protected:
     Base();
     ~Base();
     
+public:
     void setName(std::string name);
+    
+    // TODO: ??? virtual char* GetBytes(char* buffer) = 0;
     
     inline size_t GetSize() const
     {

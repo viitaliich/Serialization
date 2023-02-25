@@ -28,7 +28,7 @@ public:
     bool AddField(Field* field);
     bool AddArray(Array* array);
     
-    char* GetBytes(char* buffer);
+    char* PackBytes(char* buffer);
     
     char* Deserialize(char* data);
     

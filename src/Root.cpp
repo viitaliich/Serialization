@@ -2,14 +2,14 @@
 
 Root::Root(std::string name)
 {
-    mContainerType = EnumContainerType::ROOT;
+    mContainerType = EnumWrapperType::ROOT;
     setName(name);
     mSize += mHeader.length() + sizeof(mVersion) + sizeof(mObjectsCount);
 }
 
 Root::Root()
 {
-    mContainerType = EnumContainerType::ROOT;
+    mContainerType = EnumWrapperType::ROOT;
 }
 
 Root::~Root()
@@ -21,7 +21,7 @@ Root::~Root()
     delete mObjects;
 }
 
-char* Root::GetBytes(char* buffer)
+char* Root::PackBytes(char* buffer)
 {
     char* ptr = buffer;
     ptr = sw->writeBytes(ptr, &mHeader);
@@ -34,7 +34,7 @@ char* Root::GetBytes(char* buffer)
 
     for(size_t i = 0; i < mObjects->size(); i++)
     {
-        ptr = (*mObjects)[i]->GetBytes(ptr);
+        ptr = (*mObjects)[i]->PackBytes(ptr);
     }
     
     return ptr;

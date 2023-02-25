@@ -3,7 +3,7 @@
 
 Array::Array()
 {
-    mContainerType = EnumContainerType::ARRAY;
+    mContainerType = EnumWrapperType::ARRAY;
 }
 
 Array::~Array()
@@ -11,7 +11,7 @@ Array::~Array()
     delete[] mData;
 }
 
-char* Array::GetBytes(char* buffer)
+char* Array::PackBytes(char* buffer)
 {
     char* ptr = buffer;
     ptr = sw->writeBytes(ptr, &mContainerType);
@@ -50,6 +50,7 @@ char* Array::Deserialize(char* data)
     return ptr;
 }
 
+// TODO: implement using union ???
 void Array::LogArray()
 {
     std::cout << "mContainerType - " << (int)mContainerType << std::endl;

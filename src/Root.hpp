@@ -31,7 +31,7 @@ public:
     Root();
     ~Root();
     
-    char* GetBytes(char* buffer);
+    char* PackBytes(char* buffer);
     
     bool AddObject(Object* object);
     
